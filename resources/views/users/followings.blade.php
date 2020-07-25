@@ -9,12 +9,8 @@
         <div class="col-sm-8">
             {{-- タブ --}}
             @include('users.navtabs')
-            @if (Auth::id() == $user->id)
-                {{-- 投稿フォーム --}}
-                @include('hot_springs.form')
-            @endif
-            {{-- 投稿一覧 --}}
-            @include('hot_springs.hot_springs')
+            {{-- ユーザ一覧 --}}
+            @include('users.users')
         </div>
     </div>
 @endsection
