@@ -13,7 +13,7 @@ class Hot_springsController extends Controller
             // 認証済みユーザを取得
             $user = \Auth::user();
             // ユーザの投稿の一覧を作成日時の降順で取得
-            $hot_springs = $user->hot_springs()->orderBy('created_at', 'desc')->paginate(10);
+            $hot_springs = $user->feed_hot_springs()->orderBy('created_at', 'desc')->paginate(10);
 
             $data = [
                 'user' => $user,
