@@ -44,11 +44,11 @@ class Hot_springsController extends Controller
     public function destroy($id)
     {
         // idの値で投稿を検索して取得
-        $hot_springs = \App\Hot_springs::findOrFail($id);
+        $hot_spring = \App\Hot_spring::findOrFail($id);
 
         // 認証済みユーザ（閲覧者）がその投稿の所有者である場合は、投稿を削除
-        if (\Auth::id() === $hot_springs->user_id) {
-            $hot_springs->delete();
+        if (\Auth::id() === $hot_spring->user_id) {
+            $hot_spring->delete();
         }
 
         // 前のURLへリダイレクトさせる

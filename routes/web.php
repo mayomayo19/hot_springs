@@ -32,5 +32,13 @@ Route::group(['middleware' => ['auth']], function () {
     });
     
     Route::resource('users', 'UsersController', ['only' => ['index', 'show']]);
+    
+    // 追加
+    Route::group(['prefix' => 'hot_springs/{id}'], function () {
+        Route::post('like', 'LikesController@store')->name('likes.like');
+        Route::delete('unlike', 'LikesController@destroy')->name('likes.unlike');
+        Route::get('add_likes', 'UsersController@add_likes')->name('users.add_likes');
+    });
+    
     Route::resource('hot_springs', 'Hot_springsController', ['only' => ['store', 'destroy']]);
 });

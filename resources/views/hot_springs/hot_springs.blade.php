@@ -15,6 +15,10 @@
                         <p class="mb-0">{!! nl2br(e($hot_spring->content)) !!}</p>
                     </div>
                     <div>
+                        {{-- お気に入り登録ボタン --}}
+                        @include('user_like.likes_button')      
+                    </div>
+                    <div>
                         @if (Auth::id() == $hot_spring->user_id)
                             {{-- 投稿削除ボタンのフォーム --}}
                             {!! Form::open(['route' => ['hot_springs.destroy', $hot_spring->id], 'method' => 'delete']) !!}

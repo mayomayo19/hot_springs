@@ -84,4 +84,28 @@ class UsersController extends Controller
             'users' => $followers,
         ]);
     }
+    
+     /**
+     * ユーザのお気に入り一覧ページを表示するアクション。
+     *
+     * @param  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function add_likes($id)
+    {
+        // idの値でユーザを検索して取得
+        $user = \App\User::findOrFail($id);
+        
+        // 関係するモデルの件数をロード
+        $user->loadRelationshipCounts();
+
+        // ユーザのお気に入り登録一覧を取得
+        $hot_springs = $user->likes()->paginate(10);
+
+        // フォロー一覧ビューでそれらを表示
+        return view('users.likes', [
+            "user" => $user,
+            'hot_springs' => $hot_springs,
+        ]);
+    }
 }

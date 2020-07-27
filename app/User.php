@@ -125,7 +125,7 @@ class User extends Authenticatable
      */
     public function loadRelationshipCounts()
     {
-        $this->loadCount('hot_springs',"followings","followers");
+        $this->loadCount('hot_springs',"followings","followers","likes");
     }
     
     /**
@@ -139,6 +139,69 @@ class User extends Authenticatable
         $userIds[] = $this->id;
         // それらのユーザが所有する投稿に絞り込む
         return Hot_spring::whereIn('user_id', $userIds);
+    }
+    
+    /**
+     * このユーザがお気にいり登録したのユーザ。（ Hot_springモデルとの関係を定義）
+     */
+    public function likes()
+    {
+        return $this->belongsToMany(Hot_spring::class, 'likes', 'user_id', 'hot_springs_id')->withTimestamps();
+    }
+    
+    
+    /**
+     * $hot_springsIdで指定された投稿をお気に入り登録する。
+     *
+     * @param  int  $userId
+     * @return bool
+     */
+    public function like($hot_springsId)
+    {
+        // すでにお気に入り登録しているかの確認
+        $exist = $this->is_like($hot_springsId);
+
+        if ($exist) {
+            // すでにお気に入り登録していれば何もしない
+            return false;
+        } else {
+            // 未フォローであればフォローする
+            $this->likes()->attach($hot_springsId);
+            return true;
+        }
+    }
+    
+    /**
+     * $hot_springsIdで指定された投稿をお気に入り登録を外すする。
+     *
+     * @param  int  $userId
+     * @return bool
+     */
+    public function unlike($hot_springsId)
+    {
+        // すでにお気に入り登録しているかの確認
+        $exist = $this->is_like($hot_springsId);
+
+        if ($exist) {
+            // すでにお気に入り登録していれば登録を外す
+            $this->likes()->detach($hot_springsId);
+            return true;
+        } else {
+            // 未登録であれば何もしない
+            return false;
+        }
+    }
+    
+    /**
+     * 指定された $hot_springsIdの投稿をこのユーザがお気に入り登録中であるか調べる。登録中ならtrueを返す。
+     *
+     * @param  int  $userId
+     * @return bool
+     */
+    public function is_like($hot_springsId)
+    {
+        // お気に入り登録中の投稿の中に $hot_springsIdのものが存在するか
+        return $this->likes()->where('hot_springs_id', $hot_springsId)->exists();
     }
     
 }
