@@ -14,17 +14,17 @@
                         {{-- 投稿内容 --}}
                         <p class="mb-0">{!! nl2br(e($hot_spring->content)) !!}</p>
                     </div>
-                    <div>
+                    <div style="display:inline-flex">
                         {{-- お気に入り登録ボタン --}}
                         @include('user_like.likes_button')      
-                    </div>
-                    <div>
-                        @if (Auth::id() == $hot_spring->user_id)
-                            {{-- 投稿削除ボタンのフォーム --}}
-                            {!! Form::open(['route' => ['hot_springs.destroy', $hot_spring->id], 'method' => 'delete']) !!}
-                                {!! Form::submit('削除', ['class' => 'btn btn-danger btn-sm']) !!}
-                            {!! Form::close() !!}
-                        @endif
+                        <div>
+                            @if (Auth::id() == $hot_spring->user_id)
+                                {{-- 投稿削除ボタンのフォーム --}}
+                                {!! Form::open(['route' => ['hot_springs.destroy', $hot_spring->id], 'method' => 'delete']) !!}
+                                    {!! Form::submit('削除', ['class' => 'btn btn-danger btn-sm']) !!}
+                                {!! Form::close() !!}
+                            @endif
+                        </div>
                     </div>
                 </div>
             </li>
